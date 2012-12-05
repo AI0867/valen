@@ -51,15 +51,32 @@ my %config = (
 
 	addons_hostname			=> 'add-ons.wesnoth.org',
 
-	# 15006: 1.11.x
-	# 15002: 1.10.x
-	addons_ports			=> [ 15006,  15002 ],
+	addons_ports			=> {
+		dev => 15006,
+		stable => 15002
+		#oldstable => 15001,
+		#ancientstable => 15003,
+		#1.4 => 15005,
+		#trunk => 15004
+	},
 
 	mp_main_hostname		=> 'server.wesnoth.org',
 	mp_alt2_hostname		=> 'server2.wesnoth.org',
 	mp_alt3_hostname		=> 'server3.wesnoth.org',
 
-	mp_port					=> 15000,
+	mp_mux_port				=> 15000,
+
+	mp_main_ports			=> {
+		ancientstable => 14995,
+		oldstable => 14998,
+		stable => 14999,
+		dev => 14997,
+		trunk => 15000
+	},
+	mp_alt_ports			=> {
+		ancientstable => 14999,
+		oldstable => 14998
+	},
 
 	web_url					=> 'http://wesnoth.org/',
 	forums_url				=> 'http://forums.wesnoth.org/',
@@ -550,10 +567,12 @@ if($status{dns} != STATUS_GOOD && $status{web} != STATUS_GOOD) {
 
 my $addr = $config{addons_hostname};
 
-foreach my $port (@{$config{addons_ports}}) {
+foreach my $version (keys %{$config{addons_ports}}) {
+	my $port = ${$config{addons_ports}}{$version};
 	my $otimer = otimer->new();
 
 	my $port_status = check_campaignd($addr, $port);
+	$status{"addons-$version"} = $port_status;
 
 	if(($status{addons} == STATUS_GOOD && !$port_status) ||
 	   ($status{addons} == STATUS_FAIL && $port_status)) {
@@ -575,13 +594,37 @@ dprint "*** campaignd: " . $status{addons} . "\n";
 
 {
 
-$status{'mp-main'} = check_wesnothd($config{mp_main_hostname}, $config{mp_port});
+foreach my $version (keys %{$config{mp_main_ports}}) {
+	my $port = ${$config{mp_main_ports}}{$version};
+	my $otimer = otimer->new();
+
+	my $port_status = check_wesnothd($config{mp_main_hostname}, $port);
+	$status{"mp-main-$version"} = $port_status;
+}
+
+$status{'mp-main'} = check_wesnothd($config{mp_main_hostname}, $config{mp_mux_port});
 dprint "*** wesnothd 1: " . $status{'mp-main'} . "\n";
 
-$status{'mp-alt2'} = check_wesnothd($config{mp_alt2_hostname}, $config{mp_port});
+foreach my $version (keys %{$config{mp_alt_ports}}) {
+	my $port = ${$config{mp_alt_ports}}{$version};
+	my $otimer = otimer->new();
+
+	my $port_status = check_wesnothd($config{mp_alt2_hostname}, $port);
+	$status{"mp-alt2-$version"} = $port_status;
+}
+
+$status{'mp-alt2'} = check_wesnothd($config{mp_alt2_hostname}, $config{mp_mux_port});
 dprint "*** wesnothd 2: " . $status{'mp-alt2'} . "\n";
 
-$status{'mp-alt3'} = check_wesnothd($config{mp_alt3_hostname}, $config{mp_port});
+foreach my $version (keys %{$config{mp_alt_ports}}) {
+	my $port = ${$config{mp_alt_ports}}{$version};
+	my $otimer = otimer->new();
+
+	my $port_status = check_wesnothd($config{mp_alt3_hostname}, $port);
+	$status{"mp-alt3-$version"} = $port_status;
+}
+
+$status{'mp-alt3'} = check_wesnothd($config{mp_alt3_hostname}, $config{mp_mux_port});
 dprint "*** wesnothd 3: " . $status{'mp-alt3'} . "\n";
 
 }
