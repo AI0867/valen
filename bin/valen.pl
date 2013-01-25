@@ -73,10 +73,6 @@ my %config = (
 		dev => 14997,
 		trunk => 15000
 	},
-	mp_alt_ports			=> {
-		ancientstable => 14999,
-		oldstable => 14998
-	},
 
 	web_url					=> 'http://wesnoth.org/',
 	forums_url				=> 'http://forums.wesnoth.org/',
