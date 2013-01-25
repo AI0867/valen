@@ -3,7 +3,7 @@
  * codename "Valen": a Wesnoth facilities status page
  * index.php: Web front-end
  *
- * Copyright (C) 2012 by Ignacio Riquelme Morelle <shadowm2006@gmail.com>
+ * Copyright (C) 2012, 2013 by Ignacio Riquelme Morelle <shadowm2006@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -115,13 +115,15 @@ function display_status($facility_id, $display_title, $display_description, $sub
 		'</span><span class="statuses">' .
 		'<span class="status">' . $label . '</span>' .
 		'<span class="substatuses">');
+
 	foreach($subversions as $version) {
 		$numeric = get_numeric_version($version);
 		$full_id = "$facility_id-$version";
 		list($class, $label) = get_status($status[$full_id]);
 		print(' <span class="sub' . $class . '" title="' . $label . '">' . $numeric . '</span>');
 	}
-		print('</span></span>' .
+
+	print('</span></span>' .
 		'<span class="clear"><span></span></span>' .
 		'</li>');
 
@@ -286,14 +288,14 @@ read_report_file(VALEN_REPORT_FILE);
 		'mp-alt2',
 		'Alternate MP server (server2.wesnoth.org)',
 		'Official alternate MP server',
-		array('ancientstable', 'oldstable', 'stable')
+		array('ancientstable', 'oldstable', 'stable', 'dev', 'trunk')
 	);
 
 	display_status(
 		'mp-alt3',
 		'Alternate MP server (server3.wesnoth.org)',
 		'Official alternate MP server',
-		array('ancientstable', 'oldstable', 'stable')
+		array('ancientstable', 'oldstable', 'stable', 'dev', 'trunk')
 	);
 ?></ul>
 
@@ -331,7 +333,7 @@ make sure to notify us through any of our support channels:</p>
 
 <div id="footer">
 	<div id="note">
-		<p>Copyright &copy; 2003-2012 The Battle for Wesnoth</p>
+		<p>Copyright &copy; 2003-2013 The Battle for Wesnoth</p>
 		<p>Supported by <a href="http://www.jexiste.fr/">Jexiste</a>.</p>
 	</div>
 </div>

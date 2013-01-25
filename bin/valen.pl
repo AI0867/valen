@@ -3,7 +3,7 @@
 # codename "Valen": a Wesnoth facilities status page
 # valen.pl: Web status poll script
 #
-# Copyright (C) 2012 by Ignacio Riquelme Morelle <shadowm2006@gmail.com>
+# Copyright (C) 2012, 2013 by Ignacio Riquelme Morelle <shadowm2006@gmail.com>
 #
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -64,7 +64,19 @@ my %config = (
 	mp_alt2_hostname		=> 'server2.wesnoth.org',
 	mp_alt3_hostname		=> 'server3.wesnoth.org',
 
-	mp_port					=> 15000,
+	mp_mux_port				=> 15000,
+
+	mp_main_ports			=> {
+		ancientstable => 14995,
+		oldstable => 14998,
+		stable => 14999,
+		dev => 14997,
+		trunk => 15000
+	},
+	mp_alt_ports			=> {
+		ancientstable => 14999,
+		oldstable => 14998
+	},
 
 	web_url					=> 'http://wesnoth.org/',
 	forums_url				=> 'http://forums.wesnoth.org/',
@@ -570,7 +582,7 @@ if($status{dns} != STATUS_GOOD && $status{web} != STATUS_GOOD) {
 my $addr = $config{addons_hostname};
 
 foreach my $version (keys %{$config{addons_ports}}) {
-	my $port = ${$config{addons_ports}}{$version};
+	my $port = $config{addons_ports}->{$version};
 	my $otimer = otimer->new();
 
 	my $port_status = check_campaignd($addr, $port);
