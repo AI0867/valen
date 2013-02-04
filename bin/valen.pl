@@ -482,7 +482,7 @@ sub chdir_to_scriptloc {
 		$executable = $_;
 	}
 	@_ = split(/\0/, $executable);
-	$executable = $_[-1];
+	$executable = $_[1];
 	@_ = split('/', $executable);
 	pop @_;
 	my $directory = join('/', @_);
