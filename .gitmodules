@@ -1,3 +1,3 @@
-[submodule "bin/wesnothd_client"]
-	path = bin/wesnothd_client
-	url = git://github.com/AI0867/wesnothd_client.git
+[submodule "bin/wesnet-tools"]
+	path = bin/wesnet-tools
+	url = git://github.com/AI0867/wesnet-tools.git

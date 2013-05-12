@@ -604,7 +604,7 @@ dprint "*** campaignd: " . $status{addons} . "\n";
 
 {
 	chdir_to_scriptloc;
-	open(WESNOTHD, "./wesnothd_client/wesnothd_probe.py |") || dwarn "wesnothd_probe.py failed\n";
+	open(WESNOTHD, "./wesnet-tools/wesnothd_probe.py |") || dwarn "wesnothd_probe.py failed\n";
 	while(<WESNOTHD>) {
 		chomp;
 		my ($key, $value) = split(/=/, $_);
