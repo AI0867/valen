@@ -96,7 +96,7 @@ function get_numeric_version($version) {
 		case 'dev':
 			return '1.11';
 		case 'trunk':
-			return '1.11+svn';
+			return '1.11+dev';
 		default:
 			return 'unknown';
 	}
