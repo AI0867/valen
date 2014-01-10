@@ -3,7 +3,7 @@
 # codename "Valen": a Wesnoth facilities status page
 # valen.pl: Web status poll script
 #
-# Copyright (C) 2012, 2013 by Ignacio Riquelme Morelle <shadowm2006@gmail.com>
+# Copyright (C) 2012 - 2014 by Ignacio Riquelme Morelle <shadowm2006@gmail.com>
 #
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -47,7 +47,7 @@ my %config = (
 
 	hostname				=> 'wesnoth.org',
 	# NOTE: This needs to be updated if wesnoth.org's host IP ever changes.
-	host_ip					=> '65.18.193.12',
+	host_ip					=> '144.76.5.6',
 
 	addons_hostname			=> 'add-ons.wesnoth.org',
 
@@ -193,7 +193,9 @@ sub check_url($)
 
 	# Really, we should only get 200 OK unless there's something unusual
 	# going on with the HTTP server.
-	my $ret = int($resp->code() == 200);
+	# MediaWiki also throws a 301 on the / path because it wants to show
+	# a permalink for the user under any circumstances or something.
+	my $ret = int($resp->code() == 200 || $resp->code() == 301);
 
 	dprint "HTTP ($url): $ret (" . $resp->status_line() . ")\n";
 
